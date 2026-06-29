@@ -1,0 +1,49 @@
+/* =========================================================
+   LUMINA — Responsive Fine-tuning & Shared Motion
+   ========================================================= */
+
+/* --- Page transition for SPA view swap --- */
+.view{ animation: view-in .45s var(--ease); }
+@keyframes view-in{ from{ opacity:0; transform: translateY(14px); } to{ opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce){ .view{ animation:none; } }
+
+/* --- Toast icon spin for loading states --- */
+.spin{ animation: spin 1s linear infinite; }
+@keyframes spin{ to{ transform: rotate(360deg); } }
+
+/* --- Tablet breakpoint --- */
+@media (max-width: 1080px){
+  .wrap{ max-width: 100%; }
+}
+
+/* --- Mobile breakpoint global polish --- */
+@media (max-width: 640px){
+  :root{ --header-h: 68px; }
+  .hero{ padding: 36px 0 56px; }
+  .hero-actions .btn{ flex:1; }
+  .value-props{ padding: 48px 0; }
+  .shop-section{ padding: 8px 0 60px; }
+  .section-head{ margin-bottom: 24px; }
+  .drawer{ max-width: 100%; }
+  .pm-add-row{ flex-direction:column; }
+  .pm-qty{ align-self:flex-start; }
+  .newsletter-form{ flex-direction:column; }
+  .checkout-steps{ overflow-x:auto; padding-bottom:4px; }
+}
+
+@media (max-width: 420px){
+  .product-grid{ gap:12px; }
+  .card-name{ font-size:.88rem; }
+  .hero-trust{ gap:18px; }
+}
+
+/* --- Print: keep it sane if someone prints a receipt page --- */
+@media print{
+  #site-header, .drawer, #toast, .overlay, footer .newsletter{ display:none !important; }
+}
+
+/* --- Quantity stepper bigger hit target on touch --- */
+@media (pointer: coarse){
+  .qty-stepper button{ width:34px; height:34px; }
+  .icon-btn{ width:46px; height:46px; }
+}

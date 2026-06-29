@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumina — Premium Tech Essentials for Your Workspace</title>
+<meta name="description" content="Lumina is a curated shop for premium tech essentials: audio, wearables, desk gear, and seating designed for the modern creator.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/products.css">
+<link rel="stylesheet" href="css/modals.css">
+<link rel="stylesheet" href="css/account-checkout.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<!-- ============================= HEADER ============================= -->
+<header id="site-header">
+  <div class="wrap header-row">
+    <button class="logo" data-action="show-home" aria-label="Lumina home">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      </span>
+      LUMINA
+    </button>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#shop" data-action="show-home">Shop</a>
+      <a href="#shop" data-action="tab-collection" data-collection="new">New Arrivals</a>
+      <a href="#shop" data-action="tab-collection" data-collection="bestseller">Bestsellers</a>
+      <a href="#shop" data-action="tab-collection" data-collection="sale">Sale</a>
+    </nav>
+
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="search-input" class="search-input" placeholder="Search headphones, chairs, hubs…" autocomplete="off" role="combobox" aria-expanded="false" aria-label="Search products">
+      <div id="search-suggest" class="search-suggest" role="listbox"></div>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="account-btn" data-action="account-click" aria-label="Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+      <button class="icon-btn" data-action="toggle-wishlist-drawer" aria-label="Wishlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        <span id="wishlist-badge" class="badge-count hidden">0</span>
+      </button>
+      <button class="icon-btn" data-action="toggle-cart" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/></svg>
+        <span id="cart-badge" class="badge-count hidden">0</span>
+      </button>
+      <button class="icon-btn mobile-menu-btn" data-action="open-mobile-nav" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================= MOBILE NAV ============================= -->
+<div id="mobile-nav" aria-label="Mobile navigation">
+  <div class="mobile-nav-top">
+    <span class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></span>LUMINA</span>
+    <button class="icon-btn" data-action="close-mobile-nav" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="mobile-search">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="text" id="mobile-search-input" class="search-input" placeholder="Search products…" autocomplete="off">
+    <div id="mobile-search-suggest" class="search-suggest" role="listbox"></div>
+  </div>
+  <nav class="mobile-nav-links">
+    <a href="#shop" data-action="show-home">Shop</a>
+    <a href="#shop" data-action="jump-category" data-cat="audio">Audio</a>
+    <a href="#shop" data-action="jump-category" data-cat="desk">Desk &amp; Office</a>
+    <a href="#shop" data-action="jump-category" data-cat="wearables">Wearables</a>
+    <a href="#" data-action="account-click">Account</a>
+  </nav>
+</div>
+
+<main id="main-content">
+
+<!-- ============================= HOME VIEW ============================= -->
+<div id="home-view" class="view">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy reveal">
+        <span class="eyebrow">NEW SEASON — 2026 COLLECTION</span>
+        <h1 class="h-display">Workspace gear, <em>refined</em> for the way you actually work.</h1>
+        <p>Headphones, keyboards, chairs, and hubs designed with the same care as the work you make with them. Tested by writers, developers, and designers — not just photographed for the catalog.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-action="shop-now">Shop the collection</button>
+          <button class="btn btn-ghost" data-action="tab-collection" data-collection="new" data-scroll-shop>See what's new</button>
+        </div>
+        <div class="hero-trust">
+          <div><b>16</b><span>Curated products</span></div>
+          <div><b>4.6★</b><span>Average rating</span></div>
+          <div><b>12k+</b><span>Orders shipped</span></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=1200" alt="Desk setup with headphones and a mechanical keyboard" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%221200%22 viewBox=%220 0 1200 1200%22%3E%3Crect width=%221200%22 height=%221200%22 fill=%22%23f1efe9%22/%3E%3C/svg%3E';">
+        <div class="hero-floating-card">
+          <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <div><b>Free shipping</b><span>On orders over $150</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <span>FREE SHIPPING OVER $150</span><span>30-DAY RETURNS</span><span>SECURE CHECKOUT</span><span>NEW ARRIVALS WEEKLY</span>
+      <span>FREE SHIPPING OVER $150</span><span>30-DAY RETURNS</span><span>SECURE CHECKOUT</span><span>NEW ARRIVALS WEEKLY</span>
+    </div>
+  </div>
+
+  <section class="value-props">
+    <div class="wrap value-grid">
+      <div class="value-card reveal">
+        <div class="value-icon"><i class="bi bi-truck"></i></div>
+        <h3>Free shipping</h3>
+        <p>On every order over $150, calculated live at checkout.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon"><i class="bi bi-shield-check"></i></div>
+        <h3>Secure payment</h3>
+        <p>Cards, wallets, and pay-later — all encrypted end to end.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon"><i class="bi bi-arrow-counterclockwise"></i></div>
+        <h3>30-day returns</h3>
+        <p>Try it at your desk. If it's not right, send it back.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon"><i class="bi bi-headset"></i></div>
+        <h3>24/7 support</h3>
+        <p>Real answers from people who use this gear daily.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="category-strip">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">BROWSE</span>
+          <h2 class="h-display">Shop by category</h2>
+        </div>
+      </div>
+      <div class="category-scroller" id="category-scroller"></div>
+    </div>
+  </section>
+
+  <!-- ============================= SHOP / PRODUCT GRID ============================= -->
+  <section class="shop-section" id="shop">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">FULL CATALOG</span>
+          <h2 class="h-display">Curated products</h2>
+          <p>Handpicked essentials for your professional workspace.</p>
+        </div>
+      </div>
+
+      <div class="collection-tabs">
+        <button class="tab-btn active" data-action="tab-collection" data-collection="all">All products</button>
+        <button class="tab-btn" data-action="tab-collection" data-collection="new">New Arrivals</button>
+        <button class="tab-btn" data-action="tab-collection" data-collection="bestseller">Bestsellers</button>
+        <button class="tab-btn" data-action="tab-collection" data-collection="sale">On Sale</button>
+      </div>
+
+      <div class="shop-layout">
+        <aside class="filters" id="filters-panel" aria-label="Filter products">
+          <button class="btn btn-ghost btn-block filters-close" data-action="close-filters-mobile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M6 6l12 12M18 6L6 18"/></svg> Close filters
+          </button>
+
+          <div class="filter-group">
+            <button class="filter-group-title" data-action="filter-group-toggle">
+              Category
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="filter-body" id="filter-categories"></div>
+          </div>
+
+          <div class="filter-group">
+            <button class="filter-group-title" data-action="filter-group-toggle">
+              Price
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="filter-body price-range">
+              <div class="price-inputs">
+                <input type="number" id="price-min" placeholder="Min" min="0" aria-label="Minimum price">
+                <span>–</span>
+                <input type="number" id="price-max" placeholder="Max" min="0" aria-label="Maximum price">
+              </div>
+              <button class="btn btn-ghost" style="font-size:.78rem;padding:8px" data-action="apply-price">Apply</button>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <button class="filter-group-title" data-action="filter-group-toggle">
+              Color
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="filter-body color-swatches" id="filter-colors"></div>
+          </div>
+
+          <div class="filter-group">
+            <button class="filter-group-title" data-action="filter-group-toggle">
+              Rating
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="filter-body rating-filter" id="filter-ratings"></div>
+          </div>
+
+          <button class="clear-filters" data-action="reset-filters">Clear all filters</button>
+        </aside>
+
+        <div class="shop-main">
+          <button class="btn btn-ghost filters-mobile-toggle" data-action="open-filters-mobile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 6h16M7 12h10M10 18h4"/></svg> Filters
+          </button>
+
+          <div class="shop-toolbar">
+            <span class="result-count" id="result-count"></span>
+            <select class="sort-select" id="sort-select" aria-label="Sort products">
+              <option value="featured">Featured</option>
+              <option value="newest">Newest</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+            </select>
+          </div>
+
+          <div class="active-chips" id="active-chips"></div>
+
+          <div class="product-grid" id="product-grid"></div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="newsletter reveal">
+    <div>
+      <span class="eyebrow" style="color:#a89bff">STAY IN THE LOOP</span>
+      <h2 class="h-display">Get 10% off your first order</h2>
+      <p>New arrivals, restocks, and the occasional desk-setup teardown. Unsubscribe anytime.</p>
+    </div>
+    <div>
+      <form class="newsletter-form" id="newsletter-form">
+        <input type="email" id="newsletter-email" placeholder="you@example.com" required aria-label="Email for newsletter">
+        <button type="submit" class="btn btn-accent">Subscribe</button>
+      </form>
+      <p class="newsletter-note">By subscribing you agree to receive marketing emails and SMS updates. No spam, ever.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= CHECKOUT VIEW ============================= -->
+<div id="checkout-view" class="view" hidden>
+  <div class="wrap">
+    <button class="checkout-back" data-action="show-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Continue shopping
+    </button>
+
+    <div class="checkout-steps">
+      <span class="checkout-step active"><span class="num">1</span> Shipping</span>
+      <span class="checkout-step active"><span class="num">2</span> Payment</span>
+      <span class="checkout-step"><span class="num">3</span> Confirmation</span>
+    </div>
+
+    <div class="checkout-layout">
+      <div class="checkout-main">
+        <div class="checkout-card">
+          <h3><span class="num">1</span> Shipping address</h3>
+          <div id="saved-address-pick" class="saved-address-pick"></div>
+          <button class="btn btn-ghost" onclick="showAccountView('addresses')" style="font-size:.82rem;padding:9px 16px">Manage addresses</button>
+        </div>
+
+        <div class="checkout-card">
+          <h3><span class="num">2</span> Shipping method</h3>
+          <div id="shipping-options" class="shipping-options"></div>
+        </div>
+
+        <div class="checkout-card">
+          <h3><span class="num">3</span> Payment method</h3>
+          <div id="payment-methods" class="payment-methods"></div>
+          <div id="pay-method-fields"></div>
+        </div>
+      </div>
+
+      <div class="checkout-side">
+        <div class="checkout-card order-summary-card">
+          <h3 style="margin-bottom:18px">Order summary</h3>
+          <div id="summary-line-items" class="summary-line-items"></div>
+          <div class="promo-row">
+            <input type="text" id="promo-input" placeholder="Promo code (try LUMINA10)" aria-label="Promo code">
+            <button class="btn btn-ghost" style="padding:10px 16px;font-size:.82rem" data-action="apply-promo">Apply</button>
+          </div>
+          <div id="promo-applied" class="promo-applied" style="display:none"></div>
+          <div class="cart-summary-row"><span>Subtotal</span><span id="summary-subtotal">$0.00</span></div>
+          <div class="cart-summary-row"><span>Shipping</span><span id="summary-shipping">FREE</span></div>
+          <div class="cart-summary-row" id="summary-discount-row" style="display:none"><span>Discount</span><span id="summary-discount" style="color:var(--sage)">$0.00</span></div>
+          <div class="cart-summary-row"><span>Estimated tax</span><span id="summary-tax">$0.00</span></div>
+          <div class="cart-summary-row total"><span>Total</span><span id="summary-total">$0.00</span></div>
+          <button class="btn btn-primary btn-block" id="pay-button" onclick="processPayment()" style="margin-top:18px">Place order</button>
+          <p style="font-size:.74rem;color:var(--ink-soft);text-align:center;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            Payments are encrypted and secure
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= CONFIRMATION VIEW ============================= -->
+<div id="confirm-view" class="view" hidden>
+  <div class="wrap">
+    <div class="confirm-screen">
+      <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2 class="h-display">Order confirmed</h2>
+      <p>Thanks for shopping with Lumina. A confirmation email is on its way — we'll notify you the moment your order ships.</p>
+      <div class="confirm-order-id" id="confirm-order-id">LUM-000000</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-primary" data-action="show-home">Continue shopping</button>
+        <button class="btn btn-ghost" data-action="account-nav" data-panel="orders">View order history</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= ACCOUNT VIEW ============================= -->
+<div id="account-view" class="view" hidden>
+  <div class="wrap account-layout">
+    <aside class="account-sidebar">
+      <div class="account-profile">
+        <div class="account-avatar"><span id="account-avatar-initial">O</span></div>
+        <div>
+          <b id="account-profile-name">—</b>
+          <span id="account-profile-email">—</span>
+        </div>
+      </div>
+      <button class="account-nav-link active" data-action="account-nav" data-panel="orders">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/></svg>
+        Order history
+      </button>
+      <button class="account-nav-link" data-action="account-nav" data-panel="addresses">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Address book
+      </button>
+      <button class="account-nav-link" data-action="account-nav" data-panel="wishlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        Wishlist
+      </button>
+      <button class="account-nav-link logout" data-action="logout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Log out
+      </button>
+    </aside>
+
+    <div>
+      <div class="account-panel" data-panel="orders">
+        <h2>Order history</h2>
+        <div id="orders-list"></div>
+      </div>
+      <div class="account-panel" data-panel="addresses" hidden>
+        <h2>Address book</h2>
+        <div id="addresses-list"></div>
+      </div>
+      <div class="account-panel" data-panel="wishlist" hidden>
+        <h2>Your wishlist</h2>
+        <div id="account-wishlist-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></span>LUMINA</span>
+        <p>Premium tech essentials for the modern workspace — designed, tested, and shipped with care.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="Twitter / X"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="#shop" data-action="jump-category" data-cat="audio">Audio</a>
+        <a href="#shop" data-action="jump-category" data-cat="desk">Desk &amp; Office</a>
+        <a href="#shop" data-action="jump-category" data-cat="wearables">Wearables</a>
+        <a href="#shop" data-action="jump-category" data-cat="seating">Seating</a>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <a href="#">Shipping &amp; returns</a>
+        <a href="#">Track an order</a>
+        <a href="#">Size guide</a>
+        <a href="#">Contact support</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Lumina</a>
+        <a href="#">Sustainability</a>
+        <a href="#">Careers</a>
+        <a href="#">Privacy policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Lumina. All rights reserved. Front-end demo build.</span>
+      <div class="payment-icons">
+        <span>VISA</span><span>MASTERCARD</span><span>PAYPAL</span><span>BNPL</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================= CART DRAWER ============================= -->
+<div class="drawer-scrim" id="drawer-scrim"></div>
+<aside class="drawer" id="cart-drawer" aria-label="Shopping cart">
+  <div class="drawer-header">
+    <h2>Your cart</h2>
+    <button class="icon-btn" data-action="close-cart" aria-label="Close cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="drawer-body" id="cart-items"></div>
+  <div class="drawer-footer" id="cart-footer">
+    <div class="cart-summary-row total"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>
+    <p style="font-size:.76rem;color:var(--ink-soft);margin:6px 0 16px">Shipping and taxes calculated at checkout.</p>
+    <button class="btn btn-primary btn-block" data-action="go-to-checkout">Checkout now</button>
+  </div>
+</aside>
+
+<!-- ============================= WISHLIST DRAWER ============================= -->
+<aside class="drawer" id="wishlist-drawer" aria-label="Wishlist">
+  <div class="drawer-header">
+    <h2>Your wishlist</h2>
+    <button class="icon-btn" data-action="close-wishlist-drawer" aria-label="Close wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="drawer-body" id="wishlist-items"></div>
+  <div class="drawer-footer">
+    <p style="font-size:.8rem;font-weight:700;margin-bottom:10px">Share your wishlist</p>
+    <div class="share-row">
+      <button data-action="share-wishlist" data-channel="copy"><i class="bi bi-link-45deg" style="font-size:1.1rem"></i>Copy link</button>
+      <button data-action="share-wishlist" data-channel="WhatsApp"><i class="bi bi-whatsapp" style="font-size:1.1rem"></i>WhatsApp</button>
+      <button data-action="share-wishlist" data-channel="Email"><i class="bi bi-envelope" style="font-size:1.1rem"></i>Email</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ============================= PRODUCT QUICK-VIEW MODAL ============================= -->
+<div class="overlay" id="product-modal-overlay">
+  <div class="panel" id="product-modal-content" role="dialog" aria-modal="true" aria-label="Product details"></div>
+</div>
+
+<!-- ============================= AUTH MODAL ============================= -->
+<div class="overlay" id="auth-modal-overlay">
+  <div class="panel auth-modal" id="auth-modal-content" role="dialog" aria-modal="true" aria-label="Log in or create account"></div>
+</div>
+
+<!-- ============================= TOAST ============================= -->
+<div id="toast" role="status" aria-live="polite">
+  <span id="toast-icon"></span>
+  <span id="toast-msg">Item added to cart!</span>
+</div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="js/products-data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/render-products.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/search.js"></script>
+<script src="js/cart-wishlist.js"></script>
+<script src="js/product-modal.js"></script>
+<script src="js/account.js"></script>
+<script src="js/checkout.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
