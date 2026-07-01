@@ -33,11 +33,11 @@ const PRODUCTS = [
     rating: 4.8, reviewCount: 214,
     colors: [{ name: "Graphite", hex: "#2b2b2e" }, { name: "Cream", hex: "#ece6d8" }],
     sizes: null,
-    img: "https://images.unsplash.com/photo-1546435770-a3e426ff473b?auto=format&fit=crop&q=80&w=700",
+    img: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=700",
     gallery: [
-      "https://images.unsplash.com/photo-1546435770-a3e426ff473b?auto=format&fit=crop&q=80&w=900",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=900",
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=900",
-      "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&q=80&w=900"
+      "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=900"
     ],
     badge: "Sale",
     stock: 34,
@@ -75,10 +75,10 @@ const PRODUCTS = [
     rating: 4.9, reviewCount: 302,
     colors: [{ name: "Onyx", hex: "#1c1c1e" }, { name: "Titanium", hex: "#9a958a" }],
     sizes: ["41mm", "45mm"],
-    img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=700",
+    img: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&q=80&w=700",
     gallery: [
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=900",
       "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&q=80&w=900",
+      "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=900",
       "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?auto=format&fit=crop&q=80&w=900"
     ],
     badge: "New",
@@ -196,9 +196,9 @@ const PRODUCTS = [
     rating: 4.5, reviewCount: 168,
     colors: [{ name: "Pearl", hex: "#eceae4" }, { name: "Graphite", hex: "#2b2b2e" }],
     sizes: null,
-    img: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&q=80&w=700",
+    img: "https://images.unsplash.com/photo-1606741965326-cb990ae01bb2?auto=format&fit=crop&q=80&w=700",
     gallery: [
-      "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&q=80&w=900",
+      "https://images.unsplash.com/photo-1606741965326-cb990ae01bb2?auto=format&fit=crop&q=80&w=900",
       "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=80&w=900"
     ],
     badge: "Sale",

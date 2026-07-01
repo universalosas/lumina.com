@@ -206,30 +206,48 @@ input, select, textarea{ font-family: inherit; }
 
 /* --- Toast --- */
 #toast{
-  position: fixed; left:50%; bottom: 28px;
-  transform: translate(-50%, 120px);
+  position: fixed; left:50%; bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, calc(100% + 40px));
   background: var(--ink); color: var(--white);
-  padding: 14px 22px; border-radius: 100px;
+  padding: 13px 14px 13px 18px; border-radius: 100px;
   display:flex; align-items:center; gap:10px;
-  font-weight:600; font-size:.92rem;
+  font-weight:600; font-size:.88rem;
   box-shadow: var(--shadow-lg);
   z-index: 300;
   transition: transform .4s var(--ease);
-  max-width: calc(100vw - 32px);
+  max-width: min(calc(100vw - 32px), 420px);
+  pointer-events: none;
 }
-#toast.show{ transform: translate(-50%, 0); }
+#toast.show{ transform: translate(-50%, 0); pointer-events: auto; }
 #toast svg{ flex-shrink:0; color:#7CFFB2; width:18px; height:18px; }
+#toast-msg{
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  min-width: 0;
+}
+#toast-close{
+  flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  width:24px; height:24px; border-radius:50%; background: rgba(255,255,255,.12);
+  border:none; color: var(--white); margin-left:2px;
+}
+#toast-close:hover{ background: rgba(255,255,255,.22); }
+#toast-close svg{ color: var(--white); width:13px; height:13px; }
+
+@media (max-width: 480px){
+  #toast{ left:16px; right:16px; transform: translateY(calc(100% + 40px)); max-width:none; }
+  #toast.show{ transform: translateY(0); }
+}
 
 /* --- Modal overlay shared --- */
 .overlay{
   position: fixed; inset:0; background: rgba(20,19,26,.55);
   backdrop-filter: blur(4px);
-  z-index: 250; opacity:0; pointer-events:none;
-  transition: opacity .3s var(--ease);
+  z-index: 250; opacity:0; pointer-events:none; visibility:hidden;
+  transition: opacity .3s var(--ease), visibility 0s linear .3s;
   display:flex; align-items:center; justify-content:center;
   padding: 20px;
 }
-.overlay.open{ opacity:1; pointer-events:auto; }
+.overlay.open{ opacity:1; pointer-events:auto; visibility:visible; transition: opacity .3s var(--ease); }
 .overlay .panel{
   background: var(--white); border-radius: var(--r-lg);
   max-width: 480px; width:100%;
@@ -262,3 +280,12 @@ input, select, textarea{ font-family: inherit; }
 
 /* layout helper for checkout two-column grid referenced in account-checkout.css */
 .checkout-main{ min-width:0; }
+
+/* Fallback product image: ensure it never looks stretched regardless of
+   the container's aspect ratio, since the SVG itself is always square. */
+.img-fallback{
+  object-fit: contain !important;
+  background: var(--paper-dim);
+  padding: 8%;
+  box-sizing: border-box;
+}

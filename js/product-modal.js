@@ -41,10 +41,10 @@ function renderQuickView() {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
       <div class="pm-gallery">
-        <div class="pm-main-img"><img src="${gallery[state.activeModalImgIdx]}" alt="${escapeHtml(p.name)}" id="pm-main-img" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';"></div>
+        <div class="pm-main-img"><img src="${gallery[state.activeModalImgIdx]}" alt="${escapeHtml(p.name)}" id="pm-main-img"></div>
         ${gallery.length > 1 ? `
         <div class="pm-thumbs">
-          ${gallery.map((g, i) => `<img src="${g}" class="${i === state.activeModalImgIdx ? 'active' : ''}" data-action="pm-thumb" data-idx="${i}" alt="" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">`).join('')}
+          ${gallery.map((g, i) => `<img src="${g}" class="${i === state.activeModalImgIdx ? 'active' : ''}" data-action="pm-thumb" data-idx="${i}" alt="">`).join('')}
         </div>` : ''}
       </div>
       <div class="pm-info">
@@ -67,7 +67,7 @@ function renderQuickView() {
       </div>
     </div>
   `;
-  refreshIcons();
+  refreshIcons(); wireAllImages();
 }
 
 function renderPmDetails(p, activeColor, lowStock, isWishlisted) {

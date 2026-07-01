@@ -88,7 +88,7 @@ function renderCategoryStrip() {
       <span>${c.label}</span>
     </button>
   `).join('');
-  refreshIcons();
+  refreshIcons(); wireAllImages();
 }
 
 function jumpToCategory(catId) {

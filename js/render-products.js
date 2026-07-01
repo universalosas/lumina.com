@@ -9,7 +9,7 @@ function productCardHtml(p) {
   return `
     <article class="product-card reveal active" data-id="${p.id}">
       <div class="card-media" data-action="open-quickview" data-id="${p.id}">
-        <img src="${p.img}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+        <img src="${p.img}" alt="${escapeHtml(p.name)}" loading="lazy">
         <div class="card-badges">
           ${p.badge ? `<span class="pill ${p.badge === 'Sale' ? 'pill-sale' : 'pill-new'}">${p.badge}</span>` : ''}
         </div>
@@ -152,7 +152,7 @@ function renderProductGrid() {
 
   renderActiveChips();
   renderPagination(totalPages);
-  refreshIcons();
+  refreshIcons(); wireAllImages();
   updateReveal();
 }
 

@@ -2,20 +2,6 @@
    LUMINA — App State & Utilities
    ========================================================= */
 
-/* Neutral inline SVG placeholder used if a hotlinked product photo fails to
-   load — keeps the layout intact instead of showing a broken-image icon. */
-const FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
-     <rect width="600" height="600" fill="#f1efe9"/>
-     <g fill="none" stroke="#c9c4b8" stroke-width="6">
-       <rect x="160" y="180" width="280" height="240" rx="18"/>
-       <circle cx="240" cy="250" r="22"/>
-       <path d="M160 380l80-80 60 60 60-50 80 70" />
-     </g>
-   </svg>`
-);
-
-
 const STORAGE_KEYS = {
   cart: 'lumina_cart',
   wishlist: 'lumina_wishlist',
@@ -140,19 +126,41 @@ function starsHtml(rating, size = 14) {
   return out;
 }
 
-/* --- Toast --- */
+/* --- Toast: queued so rapid actions never pile into one perpetual, ever-resetting
+   message — each toast gets its own short, fixed display window, and the user can
+   always dismiss instantly via the close button. --- */
 let toastTimer = null;
+let toastQueue = [];
+let toastShowing = false;
+
 function showToast(msg, icon = 'check') {
+  toastQueue.push({ msg, icon });
+  if (!toastShowing) advanceToastQueue();
+}
+
+function advanceToastQueue() {
+  if (!toastQueue.length) { toastShowing = false; return; }
+  toastShowing = true;
+  const { msg, icon } = toastQueue.shift();
   const toast = document.getElementById('toast');
   const msgEl = document.getElementById('toast-msg');
   const iconWrap = document.getElementById('toast-icon');
   msgEl.textContent = msg;
+  msgEl.title = msg;
   iconWrap.innerHTML = icon === 'check'
     ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>`
     : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>`;
   toast.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+  const displayMs = toastQueue.length > 0 ? 1400 : 2600; /* clear faster if more are waiting */
+  toastTimer = setTimeout(dismissToast, displayMs);
+}
+
+function dismissToast() {
+  clearTimeout(toastTimer);
+  const toast = document.getElementById('toast');
+  toast.classList.remove('show');
+  setTimeout(() => { toastShowing = false; advanceToastQueue(); }, 350);
 }
 
 /* --- Body scroll lock helper (for drawers/modals) --- */

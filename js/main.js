@@ -61,6 +61,7 @@ function handleDelegatedClick(e) {
 
   switch (action) {
     case 'show-home': showHomeView(); break;
+    case 'dismiss-toast': dismissToast(); break;
     case 'toggle-cart': document.getElementById('cart-drawer').classList.contains('open') ? closeCart() : (closeWishlistDrawer(), openCart()); break;
     case 'close-cart': closeCart(); break;
     case 'toggle-wishlist-drawer': document.getElementById('wishlist-drawer').classList.contains('open') ? closeWishlistDrawer() : (closeCart(), openWishlistDrawer()); break;
@@ -137,8 +138,15 @@ function handleDelegatedClick(e) {
     case 'select-address': selectAddress(el.value || el.closest('[data-action]').value); break;
     case 'select-shipping': selectShipping(el.value); break;
     case 'select-pay-method': selectPayMethod(el.dataset.method); break;
+    case 'select-bnpl-plan': selectBnplPlan(el.value); break;
     case 'apply-promo': applyPromoCode(); break;
     case 'add-address': addDemoAddress(); break;
+    case 'show-address-form': showAddressForm(el.dataset.mode, el.dataset.id || null); break;
+    case 'edit-address': showAddressForm('edit', el.dataset.id); break;
+    case 'cancel-address-form': cancelAddressForm(); break;
+    case 'save-address-form': saveAddressForm(); break;
+    case 'autofill-location': autoFillLocation(); break;
+    case 'autofill-location-form': autoFillLocation('form'); break;
     case 'set-default-address': setDefaultAddress(el.dataset.id); break;
     case 'remove-address': removeAddress(el.dataset.id); break;
     case 'share-wishlist': shareWishlist(el.dataset.channel); break;
@@ -163,6 +171,7 @@ function handleDelegatedChange(e) {
       break;
     case 'select-address': selectAddress(el.value); break;
     case 'select-shipping': selectShipping(el.value); break;
+    case 'select-bnpl-plan': selectBnplPlan(el.value); break;
     case 'sort-select':
       state.sort = el.value;
       renderProductGrid();
@@ -226,7 +235,7 @@ function init() {
   wireSearchInput('search-input', 'search-suggest');
   wireSearchInput('mobile-search-input', 'mobile-search-suggest');
   wireStaticListeners();
-  refreshIcons();
+  refreshIcons(); wireAllImages();
   updateReveal();
 }
 

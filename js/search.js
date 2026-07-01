@@ -24,7 +24,7 @@ function renderSearchSuggestions(inputEl, suggestEl, query) {
   } else {
     suggestEl.innerHTML = matches.map(p => `
       <div class="suggest-item" data-action="goto-product" data-id="${p.id}" role="option">
-        <img src="${p.img}" alt="" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+        <img src="${p.img}" alt="">
         <div class="meta">
           <div class="name">${escapeHtml(p.name)}</div>
           <div class="cat">${escapeHtml(p.brand)}</div>

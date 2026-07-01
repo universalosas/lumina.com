@@ -166,7 +166,7 @@ function renderOrdersPanel() {
         <span class="order-status ${o.status}">${o.status === 'delivered' ? 'Delivered' : 'In transit'}</span>
       </div>
       <div class="order-items-preview">
-        ${o.items.slice(0, 5).map(i => `<img src="${i.img}" alt="${escapeHtml(i.name)}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">`).join('')}
+        ${o.items.slice(0, 5).map(i => `<img src="${i.img}" alt="${escapeHtml(i.name)}">`).join('')}
       </div>
       <div class="order-card-bottom">
         <span style="color:var(--ink-soft)">${o.items.reduce((s, i) => s + i.qty, 0)} item${o.items.length === 1 ? '' : 's'}</span>
@@ -176,27 +176,267 @@ function renderOrdersPanel() {
   `).join('');
 }
 
+/* -----------------------------------------------
+   ADDRESS PANEL — full CRUD with real form fields
+   and browser Geolocation API auto-populate
+   ----------------------------------------------- */
+
+let addressFormMode = null; // null | 'add' | 'edit'
+let addressFormEditId = null;
+
 function renderAddressesPanel() {
   const wrap = document.getElementById('addresses-list');
-  wrap.innerHTML = state.addresses.map(a => `
+  if (addressFormMode) {
+    renderAddressForm(wrap);
+    return;
+  }
+  const cards = state.addresses.map(a => `
     <div class="address-card ${a.isDefault ? 'default' : ''}">
       <b>${escapeHtml(a.label)}</b>
-      <p>${escapeHtml(a.name)}<br>${escapeHtml(a.line)}<br>${escapeHtml(a.city)}, ${escapeHtml(a.region)}<br>${escapeHtml(a.country)}</p>
+      <p>
+        ${escapeHtml(a.name)}<br>
+        ${escapeHtml(a.line)}${a.line2 ? '<br>' + escapeHtml(a.line2) : ''}<br>
+        ${escapeHtml(a.city)}, ${escapeHtml(a.state || a.region)}, ${escapeHtml(a.zip || '')}<br>
+        ${escapeHtml(a.country)}
+      </p>
       <div class="address-actions">
+        <button data-action="edit-address" data-id="${a.id}">Edit</button>
         ${!a.isDefault ? `<button data-action="set-default-address" data-id="${a.id}">Set as default</button>` : ''}
-        <button data-action="remove-address" data-id="${a.id}">Remove</button>
+        <button data-action="remove-address" data-id="${a.id}" style="color:#c0392b">Remove</button>
       </div>
-    </div>
-  `).join('') + `<button class="btn btn-ghost" data-action="add-address" style="margin-top:8px">+ Add new address</button>`;
+    </div>`).join('');
+
+  wrap.innerHTML = cards + `
+    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+      <button class="btn btn-ghost" data-action="show-address-form" data-mode="add">
+        + Add new address
+      </button>
+      <button class="btn btn-ghost" id="use-location-btn" data-action="autofill-location" style="gap:8px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="10" stroke-dasharray="2 2"/></svg>
+        Use my current location
+      </button>
+    </div>`;
+  wireAllImages(wrap);
 }
 
-function addDemoAddress() {
-  const id = 'a' + (state.addresses.length + 1) + '_' + Date.now();
-  state.addresses.push({ id, label: 'New address', name: state.account ? state.account.name : 'Guest', line: '12 Ring Road', city: 'Benin City', region: 'Edo State', country: 'Nigeria', isDefault: false });
-  persist();
-  renderAddressesPanel();
-  showToast('Address added');
+function renderAddressForm(wrap) {
+  const isEdit = addressFormMode === 'edit';
+  const existing = isEdit ? state.addresses.find(a => a.id === addressFormEditId) : null;
+  const v = (f) => existing ? escapeHtml(existing[f] || '') : '';
+
+  wrap.innerHTML = `
+    <div class="address-form-card">
+      <h3 style="margin:0 0 18px;font-size:1.1rem">${isEdit ? 'Edit address' : 'New address'}</h3>
+
+      <div id="geo-status" style="display:none;margin-bottom:14px"></div>
+
+      <div class="form-row-split">
+        <div class="form-field" data-field="af-label">
+          <label for="af-label">Label</label>
+          <input id="af-label" value="${v('label') || 'Home'}" placeholder="e.g. Home, Work, Other">
+          <div class="error-msg">Give this address a label.</div>
+        </div>
+        <div class="form-field" data-field="af-name">
+          <label for="af-name">Full name</label>
+          <input id="af-name" value="${v('name') || (state.account ? escapeHtml(state.account.name) : '')}" placeholder="Recipient name">
+          <div class="error-msg">Enter the recipient's name.</div>
+        </div>
+      </div>
+
+      <div class="form-field" data-field="af-line">
+        <label for="af-line">Address line 1</label>
+        <input id="af-line" value="${v('line')}" placeholder="Street number and name">
+        <div class="error-msg">Enter the street address.</div>
+      </div>
+      <div class="form-field">
+        <label for="af-line2">Address line 2 <span style="color:var(--ink-soft);font-weight:400">(optional)</span></label>
+        <input id="af-line2" value="${v('line2')}" placeholder="Apartment, suite, unit, etc.">
+      </div>
+
+      <div class="form-row-split">
+        <div class="form-field" data-field="af-city">
+          <label for="af-city">City</label>
+          <input id="af-city" value="${v('city')}" placeholder="City">
+          <div class="error-msg">Enter the city.</div>
+        </div>
+        <div class="form-field" data-field="af-state">
+          <label for="af-state">State / Region</label>
+          <input id="af-state" value="${v('state') || v('region')}" placeholder="State or region">
+          <div class="error-msg">Enter the state or region.</div>
+        </div>
+      </div>
+
+      <div class="form-row-split">
+        <div class="form-field" data-field="af-zip">
+          <label for="af-zip">Postcode / ZIP</label>
+          <input id="af-zip" value="${v('zip')}" placeholder="Postal code">
+          <div class="error-msg">Enter the postcode or ZIP.</div>
+        </div>
+        <div class="form-field" data-field="af-country">
+          <label for="af-country">Country</label>
+          <input id="af-country" value="${v('country') || 'Nigeria'}" placeholder="Country">
+          <div class="error-msg">Enter the country.</div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="af-phone">Phone <span style="color:var(--ink-soft);font-weight:400">(optional)</span></label>
+        <input id="af-phone" type="tel" value="${v('phone')}" placeholder="+234 800 000 0000">
+      </div>
+
+      <label class="form-check" style="margin-bottom:20px">
+        <input type="checkbox" id="af-default" ${(!existing || existing.isDefault) ? 'checked' : ''}> Make this my default shipping address
+      </label>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" data-action="save-address-form">Save address</button>
+        <button class="btn btn-ghost" data-action="cancel-address-form">Cancel</button>
+        ${!isEdit ? `<button class="btn btn-ghost" data-action="autofill-location-form" style="margin-left:auto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          Auto-fill my location
+        </button>` : ''}
+      </div>
+    </div>`;
 }
+
+function showAddressForm(mode, editId = null) {
+  addressFormMode = mode;
+  addressFormEditId = editId;
+  renderAddressesPanel();
+  document.querySelector('.address-form-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function cancelAddressForm() {
+  addressFormMode = null;
+  addressFormEditId = null;
+  renderAddressesPanel();
+}
+
+function saveAddressForm() {
+  let valid = true;
+  const req = ['af-label', 'af-name', 'af-line', 'af-city', 'af-state', 'af-country'];
+  let firstInvalid = null;
+  req.forEach(id => {
+    const input = document.getElementById(id);
+    const field = input?.closest('.form-field');
+    if (!input?.value.trim()) {
+      field?.classList.add('invalid');
+      if (!firstInvalid) firstInvalid = input;
+      valid = false;
+    } else {
+      field?.classList.remove('invalid');
+    }
+  });
+  if (!valid) {
+    firstInvalid?.focus();
+    showToast('Please fill in all required address fields', 'warn');
+    return;
+  }
+
+  const isDefault = document.getElementById('af-default')?.checked;
+  if (isDefault) state.addresses.forEach(a => a.isDefault = false);
+
+  const data = {
+    label: document.getElementById('af-label').value.trim(),
+    name: document.getElementById('af-name').value.trim(),
+    line: document.getElementById('af-line').value.trim(),
+    line2: document.getElementById('af-line2')?.value.trim() || '',
+    city: document.getElementById('af-city').value.trim(),
+    state: document.getElementById('af-state').value.trim(),
+    region: document.getElementById('af-state').value.trim(),
+    zip: document.getElementById('af-zip')?.value.trim() || '',
+    country: document.getElementById('af-country').value.trim(),
+    phone: document.getElementById('af-phone')?.value.trim() || '',
+    isDefault: isDefault
+  };
+
+  if (addressFormMode === 'edit' && addressFormEditId) {
+    const idx = state.addresses.findIndex(a => a.id === addressFormEditId);
+    if (idx >= 0) state.addresses[idx] = { ...state.addresses[idx], ...data };
+  } else {
+    data.id = 'a_' + Date.now();
+    state.addresses.push(data);
+  }
+
+  persist();
+  addressFormMode = null;
+  addressFormEditId = null;
+  renderAddressesPanel();
+  showToast(addressFormMode === 'edit' ? 'Address updated' : 'Address saved');
+}
+
+/* --- Geolocation auto-fill ---
+   Uses the browser's native Geolocation API + a free reverse-geocoding
+   endpoint (no API key required) to populate city/region/country fields. */
+async function autoFillLocation(targetFormId = null) {
+  const statusEl = document.getElementById('geo-status') || document.getElementById('use-location-btn');
+  const setStatus = (msg, isError = false) => {
+    if (statusEl) {
+      statusEl.textContent = msg;
+      statusEl.style.display = 'block';
+      statusEl.style.color = isError ? '#c0392b' : 'var(--sage)';
+    }
+  };
+
+  if (!navigator.geolocation) {
+    showToast('Geolocation not supported in this browser', 'warn');
+    return;
+  }
+
+  setStatus('Locating you…');
+
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      const { latitude, longitude } = pos.coords;
+      try {
+        const resp = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+          { headers: { 'Accept-Language': 'en' } }
+        );
+        const data = await resp.json();
+        const addr = data.address || {};
+
+        const fillField = (id, val) => {
+          const el = document.getElementById(id);
+          if (el && val) el.value = val;
+        };
+
+        fillField('af-city', addr.city || addr.town || addr.village || addr.county || '');
+        fillField('af-state', addr.state || addr.region || '');
+        fillField('af-zip', addr.postcode || '');
+        fillField('af-country', addr.country || '');
+
+        // If the panel is in list mode (not form mode), open an add form first
+        if (!addressFormMode) {
+          showAddressForm('add');
+          setTimeout(() => {
+            fillField('af-city', addr.city || addr.town || addr.village || addr.county || '');
+            fillField('af-state', addr.state || addr.region || '');
+            fillField('af-zip', addr.postcode || '');
+            fillField('af-country', addr.country || '');
+            setStatus('Location filled in! Complete the remaining fields.');
+          }, 100);
+        } else {
+          setStatus('Location filled in! Complete the remaining fields.');
+        }
+      } catch (e) {
+        showToast('Could not reverse-geocode your location. Fill in manually.', 'warn');
+      }
+    },
+    (err) => {
+      const msgs = {
+        1: 'Location permission denied — please allow it in your browser settings.',
+        2: 'Location unavailable — please fill in manually.',
+        3: 'Location request timed out — please fill in manually.'
+      };
+      showToast(msgs[err.code] || 'Location error — please fill in manually.', 'warn');
+    },
+    { timeout: 10000, maximumAge: 60000 }
+  );
+}
+
+function addDemoAddress() { showAddressForm('add'); }
+
 function setDefaultAddress(id) {
   state.addresses.forEach(a => a.isDefault = (a.id === id));
   persist();
@@ -221,7 +461,7 @@ function renderAccountWishlistPanel() {
     return;
   }
   wrap.innerHTML = `<div class="product-grid">${items.map(productCardHtml).join('')}</div>`;
-  refreshIcons();
+  refreshIcons(); wireAllImages();
 }
 
 function hideAllMainViews() {

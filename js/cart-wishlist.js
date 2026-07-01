@@ -82,7 +82,7 @@ function renderCartDrawer() {
   } else {
     body.innerHTML = lines.map(l => `
       <div class="cart-item">
-        <img src="${l.product.img}" alt="${escapeHtml(l.product.name)}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+        <img src="${l.product.img}" alt="${escapeHtml(l.product.name)}">
         <div class="cart-item-info">
           <h4>${escapeHtml(l.product.name)}</h4>
           <div class="cart-item-meta">${l.color ? escapeHtml(l.color) : ''}${l.color && l.size ? ' · ' : ''}${l.size ? escapeHtml(l.size) : ''}</div>
@@ -103,7 +103,7 @@ function renderCartDrawer() {
   const subtotal = cartSubtotal();
   document.getElementById('cart-subtotal').textContent = money(subtotal);
   document.getElementById('cart-footer').style.display = lines.length ? 'block' : 'none';
-  refreshIcons();
+  refreshIcons(); wireAllImages();
 }
 
 /* --- Wishlist --- */
@@ -144,7 +144,7 @@ function renderWishlistDrawer() {
   } else {
     body.innerHTML = items.map(p => `
       <div class="wishlist-item">
-        <img src="${p.img}" alt="${escapeHtml(p.name)}" data-action="open-quickview" data-id="${p.id}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+        <img src="${p.img}" alt="${escapeHtml(p.name)}" data-action="open-quickview" data-id="${p.id}">
         <div class="wishlist-item-info">
           <h4 data-action="open-quickview" data-id="${p.id}">${escapeHtml(p.name)}</h4>
           <div class="price">${money(p.price)}</div>
@@ -156,17 +156,55 @@ function renderWishlistDrawer() {
       </div>
     `).join('');
   }
-  refreshIcons();
+  refreshIcons(); wireAllImages();
 }
 
-function shareWishlist(channel) {
+async function shareWishlist(channel) {
   const items = state.wishlist.map(findProduct).filter(Boolean);
-  const text = items.length
-    ? `Check out my Lumina wishlist: ${items.map(p => p.name).join(', ')}`
-    : 'Check out my Lumina wishlist!';
+  const productNames = items.map(p => p.name).join(', ');
+  const shareUrl = window.location.href.split('?')[0] + '?wishlist=' + state.wishlist.join(',');
+  const shareText = items.length
+    ? `Check out my Lumina wishlist! ${productNames}`
+    : 'Check out what I found on Lumina!';
+
   if (channel === 'copy') {
-    showToast('Wishlist link copied (demo)');
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      showToast('Wishlist link copied to clipboard!');
+    } catch (e) {
+      /* Clipboard API not available (e.g. non-HTTPS). Fall back to
+         a temporary input element select+copy. */
+      const tmp = document.createElement('textarea');
+      tmp.value = shareUrl;
+      tmp.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+      document.body.appendChild(tmp);
+      tmp.select();
+      try {
+        document.execCommand('copy');
+        showToast('Wishlist link copied!');
+      } catch (_) {
+        showToast('Could not copy — try long-pressing the address bar', 'warn');
+      }
+      document.body.removeChild(tmp);
+    }
+    return;
+  }
+
+  const encodedText = encodeURIComponent(shareText);
+  const encodedUrl = encodeURIComponent(shareUrl);
+
+  const socialUrls = {
+    WhatsApp: `https://wa.me/?text=${encodedText}%20${encodedUrl}`,
+    Twitter: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+    Facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    Telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
+    Email: `mailto:?subject=${encodeURIComponent('My Lumina Wishlist')}&body=${encodedText}%0A%0A${encodedUrl}`
+  };
+
+  const url = socialUrls[channel];
+  if (url) {
+    window.open(url, '_blank', 'noopener,noreferrer,width=600,height=500');
   } else {
-    showToast(`Shared via ${channel} (demo)`);
+    showToast(`Sharing via ${channel}`, 'check');
   }
 }

@@ -22,8 +22,16 @@
 }
 .form-field input:focus{ outline:none; border-color: var(--indigo); box-shadow: 0 0 0 4px var(--indigo-tint); }
 .form-field .error-msg{ color:#c0392b; font-size:.76rem; margin-top:5px; display:none; }
-.form-field.invalid input{ border-color:#c0392b; }
+.form-field.invalid input, .form-field.invalid select{ border-color:#c0392b; }
 .form-field.invalid .error-msg{ display:block; }
+.saved-address-pick.invalid{
+  border: 1.5px solid #c0392b; border-radius: var(--r-md); padding: 4px;
+}
+.saved-address-pick.invalid::after{
+  content: 'Please select a shipping address to continue.';
+  display: block; color: #c0392b; font-size: .8rem; font-weight: 600;
+  padding: 10px 6px 4px;
+}
 
 .form-row-split{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .form-check{ display:flex; align-items:center; gap:8px; font-size:.84rem; color:var(--ink-soft); margin-bottom:18px; }
@@ -162,3 +170,28 @@
 .confirm-screen h2{ font-size: 1.9rem; margin-bottom: 10px; }
 .confirm-screen p{ color: var(--ink-soft); margin-bottom: 28px; }
 .confirm-order-id{ font-family: var(--font-mono); background: var(--paper-dim); padding: 14px 20px; border-radius: var(--r-md); margin-bottom: 28px; font-weight:700; }
+
+/* --- Address form card --- */
+.address-form-card{
+  background: var(--paper-dim); border: 1.5px solid var(--line);
+  border-radius: var(--r-lg); padding: 24px;
+  margin-bottom: 12px;
+}
+.address-form-card .form-field input{
+  width:100%; border:1.5px solid var(--line); border-radius:var(--r-sm);
+  padding:11px 13px; font-size:.9rem;
+  background:var(--white);
+  transition: border-color .2s var(--ease);
+}
+.address-form-card .form-field input:focus{
+  outline:none; border-color:var(--indigo);
+  box-shadow: 0 0 0 3px var(--indigo-tint);
+}
+.address-form-card .form-field label{
+  display:block; font-size:.8rem; font-weight:700; margin-bottom:6px;
+}
+.address-form-card .form-field{ margin-bottom:14px; }
+
+/* Edit action in address cards */
+.address-actions button{ font-size:.78rem; font-weight:700; background:none; border:none; color:var(--indigo); cursor:pointer; }
+.address-actions button:hover{ text-decoration:underline; }
